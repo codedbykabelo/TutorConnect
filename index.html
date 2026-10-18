@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6029c7">
+  <meta name="description" content="Find a peer tutor, build your skills and book a study session with TutorConnect.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon-192.svg">
+  <title>TutorConnect | University tutoring</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" onclick="show('dashboard');return false" aria-label="TutorConnect dashboard">
+        <span class="brand-mark">✦</span><span>Tutor<span class="brand-accent">Connect</span></span>
+      </a>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="dashboard" onclick="show('dashboard')">
+          <span class="nav-icon" aria-hidden="true">⌂</span><span>Dashboard</span>
+        </button>
+        <button class="nav-link" data-view="tutors-page" onclick="show('tutors-page')">
+          <span class="nav-icon" aria-hidden="true">⌕</span><span>Find tutors</span><span class="nav-count" id="tutorNavCount">20</span>
+        </button>
+        <button class="nav-link" data-view="bookings-page" onclick="show('bookings-page')">
+          <span class="nav-icon" aria-hidden="true">▤</span><span>My bookings</span>
+        </button>
+        <button class="nav-link" data-view="calendar-page" onclick="show('calendar-page')">
+          <span class="nav-icon" aria-hidden="true">▦</span><span>Calendar</span>
+        </button>
+      </nav>
+      <div class="nav-caption nav-caption-lower">ACCOUNT</div>
+      <nav class="side-nav" aria-label="Account navigation">
+        <button class="nav-link" data-view="profile-page" onclick="show('profile-page')">
+          <span class="nav-icon" aria-hidden="true">◉</span><span>Profile</span>
+        </button>
+        <button class="nav-link" data-view="settings-page" onclick="show('settings-page')">
+          <span class="nav-icon" aria-hidden="true">⚙</span><span>Settings</span>
+        </button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-help">
+        <div class="help-icon">✦</div>
+        <strong>Learning, together</strong>
+        <p>Small steps add up to big progress.</p>
+        <button class="text-link" onclick="show('tutors-page')">Explore tutors <span aria-hidden="true">→</span></button>
+      </div>
+      <div class="sidebar-account" id="sidebarAccount"></div>
+    </aside>
+
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar(false)"></div>
+    <div class="main-column">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Open menu" aria-expanded="false">☰</button>
+        <div class="breadcrumbs"><span>Workspace</span><span aria-hidden="true">/</span><strong id="currentSection">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <button class="icon-button" onclick="show('calendar-page')" aria-label="Open calendar">▦</button>
+          <button class="user-chip" id="topUser" onclick="show(user?'profile-page':'auth-page')"></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div id="notice" role="status" aria-live="polite"></div>
+
+        <section id="dashboard" class="view">
+          <div class="welcome-row">
+            <div><div class="eyebrow" id="todayLabel">YOUR LEARNING SPACE</div><h1 id="welcome">Welcome to TutorConnect</h1><p id="roleDescription">Your next step starts with a great tutor.</p></div>
+            <button class="button button-primary" onclick="show('tutors-page')"><span aria-hidden="true">＋</span> Find a tutor</button>
+          </div>
+          <div class="stats-grid" id="dashboardStats"></div>
+          <div id="dashboardContent"></div>
+        </section>
+
+        <section id="tutors-page" class="view hidden">
+          <div class="page-heading"><div><div class="eyebrow">YOUR NEXT BREAKTHROUGH</div><h1>Find your tutor</h1><p>Meet experienced peers who can help you move forward.</p></div></div>
+          <div class="filter-panel">
+            <label class="search-control"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search a tutor, module or skill" autocomplete="off"></label>
+            <label class="select-control"><span class="sr-only">Filter by module</span><select id="moduleFilter"><option value="">All modules</option></select></label>
+            <label class="availability-toggle"><input id="availableOnly" type="checkbox"><span class="toggle-track"></span><span>Available now</span></label>
+          </div>
+          <div class="results-summary"><span id="tutorResultsLabel">Browse peer tutors</span><span id="tutorResultsCount"></span></div>
+          <div id="tutors" class="tutor-grid"></div>
+        </section>
+
+        <section id="bookings-page" class="view hidden">
+          <div class="page-heading"><div><div class="eyebrow">STAY ON TRACK</div><h1>My bookings</h1><p>Keep your study sessions and learning history in one place.</p></div></div>
+          <div class="tabs booking-tabs" role="tablist" aria-label="Filter bookings">
+            <button class="tab active" data-booking-filter="upcoming" onclick="setBookingFilter('upcoming')">Upcoming</button>
+            <button class="tab" data-booking-filter="history" onclick="setBookingFilter('history')">History</button>
+            <button class="tab" data-booking-filter="all" onclick="setBookingFilter('all')">All bookings</button>
+          </div>
+          <div id="bookingsContent"></div>
+        </section>
+
+        <section id="calendar-page" class="view hidden">
+          <div class="page-heading"><div><div class="eyebrow">PLAN AHEAD</div><h1>Study calendar</h1><p>Find a time that fits your week and keep sessions in view.</p></div></div>
+          <div class="calendar-toolbar">
+            <div class="calendar-period"><button class="icon-button" onclick="moveCalendar(-1)" aria-label="Previous week">‹</button><strong id="calendarTitle">This week</strong><button class="icon-button" onclick="moveCalendar(1)" aria-label="Next week">›</button></div>
+            <button class="button button-soft" onclick="calendarOffset=new Date().getDay()===0?1:0;renderCalendar()">Today</button>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+          <p class="calendar-note"><span class="legend-dot available-dot"></span> Available session <span class="legend-dot booked-dot"></span> Your booking</p>
+        </section>
+
+        <section id="profile-page" class="view hidden">
+          <div class="page-heading"><div><div class="eyebrow">YOUR ACCOUNT</div><h1>Profile</h1><p>Your TutorConnect account and learning details.</p></div></div>
+          <div id="profileContent"></div>
+        </section>
+
+        <section id="settings-page" class="view hidden">
+          <div class="page-heading"><div><div class="eyebrow">MAKE IT YOURS</div><h1>Settings</h1><p>Choose how you browse and use TutorConnect.</p></div></div>
+          <div class="settings-card">
+            <div class="settings-item"><div><strong>Preferred module</strong><p>Preselect a module when you browse tutors.</p></div><select id="preferredModule"><option value="">No preference</option></select></div>
+            <div class="settings-item"><div><strong>Reduce motion</strong><p>Limit animation and transitions in the interface.</p></div><label class="switch"><input id="reduceMotion" type="checkbox"><span class="toggle-track"></span></label></div>
+            <div class="settings-item"><div><strong>Install TutorConnect</strong><p>Add the app to your home screen for quick access.</p></div><button class="button button-soft" id="installButton" onclick="installApp()">Install app</button></div>
+            <div class="settings-item"><div><strong>Account session</strong><p id="sessionSetting">Sign in to manage your tutoring account.</p></div><button class="button button-quiet" id="settingsAuth" onclick="authAction()">Log in</button></div>
+          </div>
+        </section>
+
+        <section id="auth-page" class="view hidden">
+          <div class="auth-layout">
+            <div class="auth-aside"><div class="brand-mark auth-mark">✦</div><div class="eyebrow">WELCOME TO THE COMMUNITY</div><h1>Grow your skills, one session at a time.</h1><p>Find the right peer tutor, book a session and make your next study goal feel closer.</p></div>
+            <div class="auth-card">
+              <h2 id="authTitle">Welcome back</h2><p class="auth-subtitle">Sign in or create your free account.</p>
+              <div class="tabs"><button id="loginTab" class="tab active" onclick="toggleAuth(false)">Log in</button><button id="registerTab" class="tab" onclick="toggleAuth(true)">Create account</button></div>
+              <form id="authForm" onsubmit="submitAuth(event)">
+                <div class="regonly hidden"><label for="name">Full name</label><input id="name" autocomplete="name" required></div>
+                <label for="email">Email address</label><input id="email" type="email" required autocomplete="email">
+                <label for="password">Password</label><input id="password" type="password" required minlength="8" autocomplete="current-password">
+                <div class="regonly hidden"><label for="role">I am a</label><select id="role" onchange="roleFields()"><option value="student">Student</option><option value="tutor">Peer tutor</option></select>
+                  <div id="tutorFields" class="hidden"><label for="subject">Main subject</label><input id="subject" placeholder="e.g. Computer Science"><label for="specialties">Modules and specialisations</label><input id="specialties" placeholder="e.g. Python, SQL, Data Analysis"><label for="bio">Short introduction</label><textarea id="bio" rows="3" placeholder="Tell learners how you can help"></textarea></div>
+                </div>
+                <button class="button button-primary button-wide" id="authSubmit">Log in</button>
+              </form>
+              <p class="auth-footnote">Secure account access. Your password is protected.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="app-footer"><span>✦ TutorConnect</span><span>Made for focused learning</span></footer>
+    </div>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
