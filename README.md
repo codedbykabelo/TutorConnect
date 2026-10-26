@@ -1,37 +1,42 @@
-# TutorConnect
+# TutorConnect 🎓
 
-A responsive peer-tutoring platform with a Python standard-library backend, SQLite storage, and an installable Progressive Web App.
+**A Peer-to-Peer Tutoring and Session Booking Platform**
 
-## Run locally
+## About the Project
 
-Requires Python 3.10 or newer; no pip packages or Node.js are required.
+TutorConnect is a web-based platform designed to make academic support more accessible to university students.
 
-1. Open a terminal in `tutorconnect_app`.
-2. Run `python server.py` (or `python3 server.py`).
-3. Visit **http://localhost:8000**.
+The platform connects students who need academic assistance with tutors who can help them understand their modules. Students can search for tutors, view their availability and book tutoring sessions online.
 
-SQLite creates `tutorconnect.db` on first start. When a later startup needs to migrate an existing database, the application saves a timestamped `tutorconnect.db.pre-upgrade-*.bak` copy before changing the schema. Keep the database and backup together when moving the project.
+## Key Features
 
-## Explore the platform
+- **Student Registration:** Students can create accounts and manage their tutoring sessions.
+- **Tutor Registration:** Tutors can register and manage their availability.
+- **Tutor Search:** Students can search for tutors by name, module or skill.
+- **Session Booking:** Students can book and cancel tutoring sessions.
+- **Dashboards:** Separate dashboards for students, tutors and administrators.
+- **Calendar:** View available tutoring slots and upcoming sessions.
+- **Mobile-Friendly:** Responsive design for computers and smartphones.
 
-- Browse 20 included demonstration tutor profiles, their module specialisations and automatically generated local portraits.
-- Search by tutor name, module or skill; filter for tutors with open availability.
-- Register as a student or tutor. Tutor accounts can add future availability; students can book and cancel sessions.
-- Each tutor can have up to five distinct learners with active confirmed bookings across all of their modules. Multiple sessions for the same learner count once. Booking and capacity checks run inside a serialized database transaction.
-- Student, tutor and administrator dashboards show relevant sessions and platform statistics. The calendar displays upcoming available slots and confirmed sessions.
-- The demonstration administrator account is `admin@tutorconnect.local` / `Admin123!`. Change or disable these credentials before hosting the application publicly.
+## Technologies Used
 
-Demo tutor accounts are browseable and bookable, but are not login accounts. They are created automatically when the database is initialized. Demo profiles do not inflate the administrator's registered-student or registered-tutor totals.
+1.HTML,Python ,SQLite 
+2.CSS > JSON API endpoints 
+3.JavaScript 
 
-## Install the app
+The platform also supports Progressive Web App (PWA) installation.
 
-The web manifest includes 192 px and 512 px app icons. In a compatible browser, use **Install app** or **Add to Home Screen**. Local installation is supported on `localhost`; public hosting should use HTTPS. The service worker caches the interface and avatars for offline loading. Authentication, searching and booking still require a running backend connection.
+## How It Works
 
-## Technology and deployment notes
+1. A student creates an account.
+2. The student searches for a tutor based on their academic needs.
+3. The student checks the tutor's available sessions.
+4. The student books a suitable session.
+5. The tutor and student manage their bookings through their dashboards.
 
-- Frontend: HTML, CSS, vanilla JavaScript.
-- Backend and persistence: Python `http.server`, JSON endpoints and SQLite.
-- Passwords: salted PBKDF2-SHA256 hashes.
-- Sessions: stored in server memory and cleared on restart.
-- Development server: intended for local development and demonstration. Before public deployment, configure a production WSGI/ASGI server, HTTPS, persistent sessions, rate limits, CSRF protection, account recovery, credential management, backups and monitoring.
-- There is no payment processing, messaging, video calling or external profile-image service.
+
+## Project Purpose
+
+TutorConnect was developed to demonstrate practical full-stack software development skills while addressing the challenge of connecting students with accessible academic support.
+
+The project brings together frontend development, backend programming, database management and user interaction in one application.
